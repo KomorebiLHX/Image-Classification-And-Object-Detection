@@ -7,7 +7,7 @@
 
 时间：2022年5月10号
 
-Github Repo：[Image-Clssification-And-Object-Detection](https://github.com/KomorebiLHX/Image-Clssification-And-Object-Detection)
+Github Repo：[Image-Clssification-And-Object-Detection](https://github.com/KomorebiLHX/Image-Classification-And-Object-Detection)
 
 Model Path (Baidu Drive)：
 
