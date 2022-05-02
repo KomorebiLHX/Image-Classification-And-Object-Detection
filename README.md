@@ -7,14 +7,14 @@
 
 时间：2022年5月10号
 
-Github Repo：[Image-Clssification-And-Object-Detection](https://github.com/KomorebiLHX/Image-Clssification-And-Object-Detection.git)
+Github Repo：[Image-Clssification-And-Object-Detection](https://github.com/KomorebiLHX/Image-Clssification-And-Object-Detection)
 
 Model Path (Baidu Drive)：
 
 + [Faster R-CNN](https://pan.baidu.com/s/11eLZfDzwwr3NPM4zNGXx4g?pwd=rjh3)
 + [Yolov3](https://pan.baidu.com/s/1tmlyrbY8gKXqoVSG4RdtcQ?pwd=lmf9 )
 
-Referenced GitHub Repo：
+Referenced GitHub Repos：
 
 + [A simplified implemention of Faster R-CNN that replicate performance from origin paper](https://github.com/chenyuntc/simple-faster-rcnn-pytorch)
 + [ultralytics/yolov3](https://github.com/ultralytics/yolov3)
@@ -226,19 +226,19 @@ YOLO系列算法是一阶段目标检测算法的经典代表，正如其名称�
 
 ![pred_img.jpg](imgs/pred_img.jpg)
 
-![one_stage_pred_img (1).jpg](imgs/one_stage_pred_img (1).jpg)
+![one_stage_pred_img_1.jpg](imgs/one_stage_pred_img_1.jpg)
 
-![pred_img (1).jpg](imgs/pred_img (1).jpg)
+![pred_img_1.jpg](imgs/pred_img_1.jpg)
 
-![one_stage_pred_img (2).jpg](imgs/one_stage_pred_img (2).jpg)
+![one_stage_pred_img_2.jpg](imgs/one_stage_pred_img_2.jpg)
 
-![pred_img (2).jpg](imgs/pred_img (2).jpg)
+![pred_img_2.jpg](imgs/pred_img_2.jpg)
 
 
 
-![one_stage_pred_img (3).jpg](imgs/one_stage_pred_img (3).jpg)
+![one_stage_pred_img_3).jpg](imgs/one_stage_pred_img_3.jpg)
 
-![pred_img (3).jpg](imgs/pred_img (3).jpg)
+![pred_img_3).jpg](imgs/pred_img_3.jpg)
 
 可以看到，第一阶段的proposal box只**经过了一次坐标修正**，没有很好地定位目标的位置，并且也没有进行类别分类，因此没有类别的信息。此外，第一阶段的proposal box没有经过 non-maximum suppression (NMS)，所以有一些重叠的检测框没有被删减，导致了检测框比较错乱地分布在检测物体的附近。
 
