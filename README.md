@@ -180,7 +180,7 @@ CIFAR数据集是一组用于普适物体识别的数据集，由Alex Krizhevsky
 
 可视化训练集中的部分图像如下：
 
-![CIFAR100_rand](imgs\CIFAR100_rand.png)
+![CIFAR100_rand](imgs/CIFAR100_rand.png)
 
 数据集已划分好训练集和测试集。其中训练集包含50000张图片，测试集包含10000张图片。
 
@@ -242,7 +242,7 @@ ResNet（Residual Neural Network）由微软研究院的Kaiming He等四名华�
 
 ResNet通过残差学习解决了深度网络的退化问题，可以训练出更深的网络。主要思想是在网络中增加了直连通道，即Highway Network 的思想。此前的网络结构是性能输入做一个非线性变换，而Highway Network则允许保留之前网络层的一定比例的输出。
 
-ResNet的基本节点（即残差学习单元）如下：![resnet-unit](imgs\resnet-unit.png)
+ResNet的基本节点（即残差学习单元）如下：![resnet-unit](imgs/resnet-unit.png)
 
 
 
@@ -270,21 +270,21 @@ Tensorboard可视化训练和测试的loss曲线、Acc曲线如下：
 
 <div align = "center"> Train Loss</div>
 
-![cls_train_loss](imgs\cls_train_loss.png)
+![cls_train_loss](imgs/cls_train_loss.png)
 
 <div align = "center"> Test Loss</div>
 
-![cls-test-loss](imgs\cls-test-loss.png)
+![cls-test-loss](imgs/cls-test-loss.png)
 
 
 
 <div align = "center">Train Accuracy</div>
 
-![cls-train-acc](imgs\cls-train-acc.png)
+![cls-train-acc](imgs/cls-train-acc.png)
 
 <div align = "center">Test Accuracy</div>
 
-![cls-test-acc](imgs\cls-test-acc.png)
+![cls-test-acc](imgs/cls-test-acc.png)
 
 在第200个epoch时四种method下的模型结果基本趋于平稳，第200个epoch的结果整理如下：
 
@@ -305,7 +305,7 @@ Tensorboard可视化训练和测试的loss曲线、Acc曲线如下：
 
 为了使得结果更直观，我们将mixup与cutmix过程所融合的随机样本固定为一致，并将α设置为相同值；将cutout与cutmix过程所遮挡的随机区域固定为一致。
 
-设置cutout和cutmix随机遮挡区域的宽度length = 16；设置mixup和cutmix随机融合的样本为img_mix（最右侧一列）；设置mixup在融合时λ=0.7；结果如下：![cifar100_aug_vis](imgs\cifar100_aug_vis.png)
+设置cutout和cutmix随机遮挡区域的宽度length = 16；设置mixup和cutmix随机融合的样本为img_mix（最右侧一列）；设置mixup在融合时λ=0.7；结果如下：![cifar100_aug_vis](imgs/cifar100_aug_vis.png)
 
 
 
