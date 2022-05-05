@@ -5,23 +5,65 @@
 1. 林恒旭 21210980049
 2. 刘竹君 21210980052
 
-时间：2022年5月10号
+时间：2022年5月5号
 
-Github Repo：[Image-Clssification-And-Object-Detection](https://github.com/KomorebiLHX/Image-Clssification-And-Object-Detection)
+Github Repo：[Image-Classification-And-Object-Detection](https://github.com/KomorebiLHX/Image-Classification-And-Object-Detection)
 
 Model Path (Baidu Drive)：
+
++ [baseline + cutout + mixup + cutmix](https://pan.baidu.com/s/17VQQQdCOatXmTcCC9pD50Q?pwd=p7we)
 
 + [Faster R-CNN](https://pan.baidu.com/s/11eLZfDzwwr3NPM4zNGXx4g?pwd=rjh3)
 + [Yolov3](https://pan.baidu.com/s/1tmlyrbY8gKXqoVSG4RdtcQ?pwd=lmf9 )
 
 Referenced GitHub Repos：
 
-+ [A simplified implemention of Faster R-CNN that replicate performance from origin paper](https://github.com/chenyuntc/simple-faster-rcnn-pytorch)
-+ [ultralytics/yolov3](https://github.com/ultralytics/yolov3)
+- Cutout: [uoguelph-mlrg/Cutout](https://github.com/uoguelph-mlrg/Cutout)
+- Mixup: [Mixup-CIFAR10](https://github.com/facebookresearch/mixup-cifar10)
+- CutMix: [CutMix: Regularization Strategy to Train Strong Classifiers with Localizable Features](https://github.com/clovaai/CutMix-PyTorch)
 
-## Object Detection
++ Faster R-CNN：[A simplified implemention of Faster R-CNN that replicate performance from origin paper](https://github.com/chenyuntc/simple-faster-rcnn-pytorch)
++ Yolo v3：[ultralytics/yolov3](https://github.com/ultralytics/yolov3)
 
-### How to RUN
+## How to RUN
+
+### Image Classification
+
+train.py 用于训练网络和测试；
+
+Data_augmentation_vis.ipynb 为数据集及结果的可视化工作；
+
+utils文件夹包含data augmentation所需的一些函数和类；
+
+checkpoints包含已完成训练的模型，您需要转到[百度网盘链接](https://pan.baidu.com/s/17VQQQdCOatXmTcCC9pD50Q?pwd=p7we)下载对应模型；
+
+model文件夹提供可选择的网络结构（可更改args.model），本次实验选择的网络结构为Resnet-18。
+
+- 运行baseline的命令：
+
+  ```
+  python train.py --method baseline --dataset cifar100 --model resnet18 --epochs 200
+  ```
+
+- 运行cutout的命令：
+
+  ```
+  python train.py --method cutout --dataset cifar100 --model resnet18 --data_augmentation --epochs 200
+  ```
+
+- 运行mixup的命令：
+
+  ```
+  python train.py --method mixup --dataset cifar100 --model resnet18 --data_augmentation --epochs 200
+  ```
+
+- 运行cutmix的命令：
+
+  ```
+  python train.py --method cutmix --dataset cifar100 --model resnet18 --data_augmentation --epochs 200  --cutmix_prob 0.1
+  ```
+
+### Object Detection
 
 #### Faster R-CNN
 
@@ -122,10 +164,157 @@ nohup python -m visdom.server &
     bash detect.sh
     ```
 
+## Image Classification
+
+### 作业要求
+
+1、使用CNN网络模型(自己设计或使用现有的CNN架构，如AlexNet，ResNet-18)作为baseline在CIFAR-100上训练并测试；
+
+2、对比cutmix, cutout, mixup三种方法以及baseline方法在CIFAR-100图像分类任务中的性能表现；
+
+3、对三张训练样本分别经过cutmix, cutout, mixup后进行可视化，一共show 9张图像。
+
+### CIFAR 数据集介绍
+
+CIFAR数据集是一组用于普适物体识别的数据集，由Alex Krizhevsky，Vinod Nair和Geoffrey Hinton收集。Cifar-100数据集包含有60000张32X32尺寸的彩色图片，来自100个分类，每个分类包含600张图片。图片被分为5个训练批次（batch）和一个测试批次，每个批次包含10000个图像。图片的100个分类从属于20个超类。
+
+可视化训练集中的部分图像如下：
+
+![CIFAR100_rand](imgs\CIFAR100_rand.png)
+
+数据集已划分好训练集和测试集。其中训练集包含50000张图片，测试集包含10000张图片。
+
+### 数据增强方法
+
+#### Cutout
+
+论文：https://arxiv.org/abs/1708.04552
+
+Github：https://github.com/uoguelph-mlrg/Cutout
+
+Cutout是模拟遮挡，目的是提高泛化能力。CutOut能够让CNN利用整幅图像的全局信息，而不是一些小特征组成的局部信息。作者发现cutout区域的大小比形状重要，所以cutout区域只需设置为正方形即可。具体操作是利用固定大小的矩形对图像进行遮挡，在矩形范围内，所有的值都被设置为0，或者其他纯色值。为了避免填充0值对训练的影响，应当对数据进行中心归一化操作。
+
+#### Mixup
+
+论文：https://arxiv.org/abs/1710.09412
+
+Github：https://github.com/facebookresearch/mixup-cifar10
+
+mixup是一种非常规的数据增强方法，一个和数据无关的简单数据增强原则，其以线性插值的方式来构建新的训练样本和标签。实质上是通过增加扰动提高模型的泛化能力。对标签的处理如下：
+$$
+\widetilde x = \lambda x_i + (1-\lambda)x_j \\
+\widetilde y = \lambda y_i + (1-\lambda)y_j \\
+$$
+
+$$(x_i,y_i),(x_j,y_j)$$ 两个数据对是原始数据集中的训练样本对。其中$$\lambda$$是一个服从beta分布的参数，$$ \lambda \sim beta(\alpha,\alpha)$$ 
+
+#### Cutmix
+
+论文：https://arxiv.org/abs/1905.04899
+
+Github：https://github.com/clovaai/CutMix-PyTorch
+
+CutMix方法另辟蹊径，不从数值角度对两个样本插值，而是从图像的空间角度考虑，把一张图片上的某个随机矩形区域剪裁到另一张图片上生成新图片。标签的处理和mixUp是一样的，都是按照新样本中两个原样本的比例确定新的混合标签的比例。
+$$
+\widetilde x = \mathbf{M}\odot x_i + (\mathbf{1-M})\odot x_j \\
+\widetilde y = \lambda y_i + (1-\lambda)y_j \\
+$$
+$$(x_i,y_i),(x_j,y_j)$$ 两个数据对是原始数据集中的训练样本对。$\mathbf{M} \in \{0,1\}^{W \times H }$是对部分区域进行drop和填充的二进制掩码；$\odot$是逐像素相乘；$\mathbf{1}$是所有元素都为1的二进制掩码，λ与mixup一样，服从beta分布，$$ \lambda \sim beta(\alpha,\alpha)$$ 
+
+为了对二进制掩码$\mathbf{M}$进行采样，首先对剪裁区域的边框 $\mathbf{B}=(r_x,r_y,r_w,r_h)$进行采样，采样公式如下：
+$$
+r_x \sim Unif(0,W), r_w = W \sqrt{1-\lambda},\\
+r_y \sim Unif(0,H), r_h = H \sqrt{1-\lambda},
+$$
+保证裁剪区域的比例为$$\frac{r_w r_h}{WH}=1-\lambda$$，确定好裁剪区域$\mathbf{B}$之后，将$\mathbf{M}$中的裁剪区域$\mathbf{B}$置0，其他区域置1。然后将样本i中的剪裁区域$\mathbf{B}$移除，将样本j中的剪裁区域$\mathbf{B}$进行裁剪然后填充的样本i中。
+
+#### 总结
+
+- Cutout: 随机的将样本中的部分区域cut掉，并且填充0像素值，分类的结果不变；
+- Mixup: 将随机的两张样本按比例混合，分类的结果按比例分配；
+- CutMix: 将一部分区域cut掉但不填充0像素，而是随机填充训练集中的其他数据的区域像素值，分类结果按一定的比例分配
+
+### 网络结构
+
+#### ResNet
+
+ResNet（Residual Neural Network）由微软研究院的Kaiming He等四名华人提出，通过使用ResNet Unit 成功训练出了152 层的神经网络， 并在ILSVRC2015 比赛中取得冠军，在top5 上的错误率为3.57%，同时参数量比VGGNet 低，效果非常突出。ResNet 的结构可以极快的加速神经网络的训练，模型的准确率也有比较大的提升。同时ResNet 的推广性非常好，甚至可以直接用InceptionNet 网络中。
+
+ResNet通过残差学习解决了深度网络的退化问题，可以训练出更深的网络。主要思想是在网络中增加了直连通道，即Highway Network 的思想。此前的网络结构是性能输入做一个非线性变换，而Highway Network则允许保留之前网络层的一定比例的输出。
+
+ResNet的基本节点（即残差学习单元）如下：![resnet-unit](imgs\resnet-unit.png)
+
+
+
+ResNet各种层数的结构如下：
+
+![resnet-layer](imgs/resnet-layer.png)
+
+在本次实验中，我们使用的是带有17 个卷积层和1个全连接层的Resnet18。
+
+### 实验设置
+
+**网络结构：Resnet-18 model**
+
+- batch size：128
+- learning rate：0.1,  StepLR(step_size=40, gamma=0.3)
+- 优化器：SGD
+- iteration：78200
+- epoch：200
+- loss function：CrossEntropyLoss
+- 评价指标：test accuracy
+
+### 实验结果
+
+Tensorboard可视化训练和测试的loss曲线、Acc曲线如下：
+
+<div align = "center"> Train Loss</div>
+
+![cls_train_loss](imgs\cls_train_loss.png)
+
+<div align = "center"> Test Loss</div>
+
+![cls-test-loss](imgs\cls-test-loss.png)
+
+
+
+<div align = "center">Train Accuracy</div>
+
+![cls-train-acc](imgs\cls-train-acc.png)
+
+<div align = "center">Test Accuracy</div>
+
+![cls-test-acc](imgs\cls-test-acc.png)
+
+在第200个epoch时四种method下的模型结果基本趋于平稳，第200个epoch的结果整理如下：
+
+| epoch = 200  | train_loss | train_acc | test_loss | test_acc    |
+| ------------ | ---------- | --------- | --------- | ----------- |
+| **baseline** | 0.00717    | 0.99976   | 1.77465   | 0.62800     |
+| **cutout**   | 0.03139    | 0.99538   | 0.90601   | 0.77700     |
+| **mixup**    | 0.73947    | 0.86975   | 0.88870   | **0.78950** |
+| **cutmix**   | 0.13427    | 0.97626   | 0.83701   | **0.78930** |
+
+可以看到，未经过数据增强处理的baseline方法在训练集上accuracy几乎达到1，在测试集上仅有0.6，存在严重的过拟合。cutout，mixup，cutmix方法在测试集上的准确率为.77~0.79，不同程度减轻了过拟合问题，提高了模型的泛化能力。cutmix和mixup提升最高，test accuracy相对于baseline提升25.7%；cutout相对于baseline提升23.7%。
+
+综合来看，cutmix同时兼备mixup和cutout的优点，在训练集和测试集上的表现均较为理想。
+
+### 数据增强可视化
+
+要求：展现三张训练样本分别经过cutmix, cutout, mixup的结果。
+
+为了使得结果更直观，我们将mixup与cutmix过程所融合的随机样本固定为一致，并将α设置为相同值；将cutout与cutmix过程所遮挡的随机区域固定为一致。
+
+设置cutout和cutmix随机遮挡区域的宽度length = 16；设置mixup和cutmix随机融合的样本为img_mix（最右侧一列）；设置mixup在融合时λ=0.7；结果如下：![cifar100_aug_vis](imgs\cifar100_aug_vis.png)
+
+
+
+## Object Detection
+
 ### 作业要求
 
 1. 在VOC数据集上训练并测试目标检测模型Faster R-CNN和YOLO V3；在四张测试图像上可视化Faster R-CNN第一阶段的proposal box；
-2. 两个训练好后的模型分别可视化三张不在VOC数据集内，但是包含有VOC中类别物体的图像的检测结果（类别标签，得分，boundingbox），并进行对比，一共show六张图像；
+2. 两个训练好后的模型分别可视化三张不在VOC数据集内，但是包含有VOC中类别物体的图像的检测结果（类别标签，得分，boundingbox），并进行对比，一共show六张图像。
 
 ### VOC 数据集介绍
 
