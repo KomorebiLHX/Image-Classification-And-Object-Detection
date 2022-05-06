@@ -261,7 +261,9 @@ Tensorboard可视化训练和测试的loss曲线、Acc曲线如下：
 
 为了使得结果更直观，我们将mixup与cutmix过程所融合的随机样本固定为一致，并将α设置为相同值；将cutout与cutmix过程所遮挡的随机区域固定为一致。
 
-设置cutout和cutmix随机遮挡区域的宽度length = 16；设置mixup和cutmix随机融合的样本为img_mix（最右侧一列）；设置mixup在融合时λ=0.7；结果如下：![cifar100_aug_vis](imgs/cifar100_aug_vis.png)
+设置cutout和cutmix随机遮挡区域的宽度length = 16；设置mixup和cutmix随机融合的样本为img_mix（最右侧一列）；设置mixup在融合时λ=0.7；结果如下：
+
+![cifar100_aug_vis](imgs/cifar100_aug_vis.png)
 
 
 
